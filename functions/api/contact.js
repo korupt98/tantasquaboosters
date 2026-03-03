@@ -56,7 +56,7 @@ export async function onRequestPost(context) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "Tantasqua Boosters Website <onboarding@resend.dev>",
+        from: "Tantasqua Boosters Website <noreply@tantasquaboosters.com>",
         to: [CONTACT_EMAIL],
         subject: `New Contact Form Message from ${name}`,
         reply_to: email,
