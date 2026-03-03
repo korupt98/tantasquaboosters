@@ -99,13 +99,52 @@
             <a href="mailto:tantasquaboosterclub@gmail.com">tantasquaboosterclub@gmail.com</a>
           </div>
         </div>
+              
+          
         <div>
-          <div class="contact-form">
-            <input type="text" placeholder="Your Name" aria-label="Name">
-            <input type="email" placeholder="Email Address" aria-label="Email">
-            <textarea placeholder="Your Message" aria-label="Message"></textarea>
-            <button type="button">Send Message</button>
-          </div>
+          <form class="contact-form" id="contactForm" action="/api/contact" method="POST">
+            <input type="text" name="name" placeholder="Your Name" aria-label="Name" required>
+            <input type="email" name="email" placeholder="Email Address" aria-label="Email" required>
+            <textarea name="message" placeholder="Your Message" aria-label="Message" required></textarea>
+            <button type="submit" id="submitBtn">Send Message</button>
+            <p id="formStatus" style="font-size: 0.9rem; margin: 0;"></p>
+          </form>
+          <script>
+            document.getElementById('contactForm').addEventListener('submit', async function(e) {
+              e.preventDefault();
+              const btn = document.getElementById('submitBtn');
+              const status = document.getElementById('formStatus');
+              btn.disabled = true;
+              btn.textContent = 'Sending...';
+              status.textContent = '';
+              status.style.color = '';
+
+              try {
+                const res = await fetch('/api/contact', {
+                  method: 'POST',
+                  body: new FormData(this)
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                  status.textContent = data.message;
+                  status.style.color = 'var(--green-primary)';
+                  this.reset();
+                } else {
+                  status.textContent = data.error || 'Something went wrong.';
+                  status.style.color = '#c0392b';
+                }
+              } catch (err) {
+                status.textContent = 'Could not send message. Please try again.';
+                status.style.color = '#c0392b';
+              }
+
+              btn.disabled = false;
+              btn.textContent = 'Send Message';
+            });
+          </script>
+        </div>
+          
         </div>
       </div>
     </div>
